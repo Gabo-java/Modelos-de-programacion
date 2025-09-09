@@ -1,0 +1,75 @@
+class Calculadora:
+    def __init__(self):
+        self.resultado = 0
+
+    def sumar(self, n1: int, n2: int):
+        self.resultado = n1 + n2
+        return self.resultado
+    
+    def restar(self, n1: int, n2: int):
+        self.resultado = n1 - n2
+        return self.resultado
+    
+    def convertir(self, num):
+        raise NotImplementedError("Metodo para las subclases")
+    
+    def convertirDecimal(self, num):
+        raise NotImplementedError("Metodo para las subclases")
+
+class Binario(Calculadora):
+    def convertir(self, num: str):
+        return int(num, 2)
+    
+    def convertirDecimal(self, num: int):
+        return bin(num)[2:]
+    
+class Octal(Calculadora):
+    def convertir(self, num: str):
+        return int(num, 8)
+    
+    def convertirDecimal(self, num: int):
+        return oct(num)[2:]
+    
+class Hexadecimal(Calculadora):
+    def convertir(self, num: str):
+        return int(num, 16)
+    
+    def convertirDecimal(self, num: int):
+        return hex(num)[2:].upper()
+
+if __name__ == "__main__":
+    calculadora = Calculadora()
+    cbin = Binario()
+    coct = Octal()
+    chexa = Hexadecimal()
+
+    print("Bienvenido a la calculadora de Octales, Binarios y Hexadecimales")
+    print("Bases: Binario = 2  Octal = 8  Hexadecimal = 16")
+
+    base = int(input("Ingrese la base de los numeros con la que va a hacer las operaciones:"))
+    operacion = int(input("Selecciona 1 para suma 2 para resta:"))
+
+    num1 = input("Ingresa el primer numero:")
+    num2 = input("Ingresa el segundo numero:")
+
+    if base == 2:
+        num1 = cbin.convertir(num1)
+        num2 = cbin.convertir(num2)
+        re10 = calculadora.restar(num1, num2) if operacion == 2 else calculadora.sumar(num1, num2)
+        print("El resultado en decimal es:", re10)
+        print("El resultado en binario es:", cbin.convertirDecimal(re10))
+
+    elif base == 8:
+        num1 = coct.convertir(num1)
+        num2 = coct.convertir(num2)
+        re10 = calculadora.restar(num1, num2) if operacion == 2 else calculadora.sumar(num1, num2)
+        print("El resultado en decimal es:", re10)
+        print("El resultado en octal es:", coct.convertirDecimal(re10))
+
+    elif base == 16:
+        num1 = chexa.convertir(num1)
+        num2 = chexa.convertir(num2)
+        re10 = calculadora.restar(num1, num2) if operacion == 2 else calculadora.sumar(num1, num2)
+        print("El resultado en decimal es:", re10)
+        print("El resultado en hexadecimal es:", chexa.convertirDecimal(re10))
+
