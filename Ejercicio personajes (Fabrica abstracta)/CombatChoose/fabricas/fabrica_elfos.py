@@ -10,7 +10,7 @@ class Arco(IArma):
 
 class ArmaduraLigera(IArmadura):
     def get_descripcion(self):
-        return "Armadura ligera de cuero"
+        return "Armaduras de cuero ligero"
 
 class CuerpoElfo(ICuerpo):
     def get_descripcion(self):
@@ -29,3 +29,4 @@ class FabricaElfos(FabricaAbstracta):
         return CuerpoElfo()
     def crear_montura(self):
         return Ciervo()
+
