@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Selecciona una raza{% endblock %}
+
+{% block content %}
+<div class="index-bg">
+  <div class="raza-container">
+
+    <div class="raza-card" data-raza="humano">
+        <img src="{{ url_for('static', filename='img/humano.png') }}" alt="Humano" class="raza-img">
+        <h3>Humano</h3>
+    </div>
+
+    <div class="raza-card" data-raza="elfo">
+        <img src="{{ url_for('static', filename='img/elfo.png') }}" alt="Elfo" class="raza-img">
+        <h3>Elfo</h3>
+    </div>
+  
+    <div class="raza-card" data-raza="orco">
+        <img src="{{ url_for('static', filename='img/orco.png') }}" alt="Orco" class="raza-img">
+        <h3>Orco</h3>
+    </div>
+
+    <div class="raza-card" data-raza="enano">
+        <img src="{{ url_for('static', filename='img/enano.png') }}" alt="Enano" class="raza-img">
+        <h3>Enano</h3>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.querySelectorAll('.raza-card').forEach(card => {
+    card.addEventListener('click', () => {
+        const raza = card.getAttribute('data-raza');
+        window.location.href = `/seleccionar/${raza}`;
+    });
+});
+</script>
+{% endblock %}

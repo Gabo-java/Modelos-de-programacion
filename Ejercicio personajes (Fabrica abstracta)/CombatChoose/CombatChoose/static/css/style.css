@@ -1,0 +1,171 @@
+/* Fondo de madera */
+.index-bg {
+    background: url("../img/fondo.jpg") no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Contenedor de las cartas */
+.raza-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px; 
+    flex-wrap: wrap; /* permite que bajen si no hay espacio */
+}
+
+/* Cada carta */
+.raza-card {
+    width: 180px;
+    height: 250px;
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0px 4px 8px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: center;
+    overflow: hidden;
+}
+
+.raza-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 12px rgba(0,0,0,0.5);
+}
+
+/* Imagen de la carta */
+.raza-img {
+    max-width: 120px;
+    max-height: 150px;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+/* Texto dentro de la carta */
+.raza-card h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+/* 📱 Responsive para tablets */
+@media (max-width: 1024px) {
+    .raza-container {
+        gap: 30px;
+    }
+
+    .raza-card {
+        width: 160px;
+        height: 220px;
+    }
+}
+
+/* 📱 Responsive para móviles */
+@media (max-width: 768px) {
+    .raza-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .raza-card {
+        width: 80%;
+        height: auto;
+        padding: 20px;
+    }
+
+    .raza-img {
+        max-width: 150px;
+        max-height: 180px;
+    }
+}
+
+/* Fondo general */
+.base-bg {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+.main-header {
+    background: rgba(20, 20, 20, 0.9);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.main-header .logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Navbar */
+.navbar a {
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #f5f5f5;
+    transition: color 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #ffcc00;
+}
+
+/* Contenido */
+.main-content {
+    padding: 40px;
+    text-align: center;
+}
+
+/* Footer */
+.main-footer {
+    background: rgba(20, 20, 20, 0.95);
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9rem;
+    border-top: 2px solid #444;
+}
+
+.btn-volver {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: #8B4513;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: background 0.2s ease;
+}
+.btn-volver:hover {
+    background: #A0522D;
+}
+.raza-card h4 {
+    margin: 5px 0;
+    font-size: 18px;
+}
+
+.raza-card p {
+    font-size: 14px;
+    color: #333;
+    margin: 0 10px 10px;
+}
