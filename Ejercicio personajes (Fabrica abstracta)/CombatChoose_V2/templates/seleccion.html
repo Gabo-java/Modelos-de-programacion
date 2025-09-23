@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}{{ datos.raza }} - CombaChoose{% endblock %}
+
+{% block content %}
+<h2 class="text-center mb-4">Raza Seleccionada: {{ datos.raza }}</h2>
+
+<div class="raza-container">
+    <!-- Arma -->
+    <div class="raza-card">
+        <img src="{{ url_for('static', filename='img/' ~ datos.arma.img) }}" alt="Arma" class="raza-img">
+        <h3>Arma</h3>
+        <p>{{ datos.arma.desc }}</p>
+    </div>
+
+    <!-- Armadura -->
+    <div class="raza-card">
+        <img src="{{ url_for('static', filename='img/' ~ datos.armadura.img) }}" alt="Armadura" class="raza-img">
+        <h3>Armadura</h3>
+        <p>{{ datos.armadura.desc }}</p>
+    </div>
+
+    <!-- Cuerpo -->
+    <div class="raza-card">
+        <img src="{{ url_for('static', filename='img/' ~ datos.cuerpo.img) }}" alt="Cuerpo" class="raza-img">
+        <h3>Cuerpo</h3>
+        <p>{{ datos.cuerpo.desc }}</p>
+    </div>
+
+    <!-- Montura -->
+    <div class="raza-card">
+        <img src="{{ url_for('static', filename='img/' ~ datos.montura.img) }}" alt="Montura" class="raza-img">
+        <h3>Montura</h3>
+        <p>{{ datos.montura.desc }}</p>
+    </div>
+</div>
+
+<a href="{{ url_for('index') }}" class="btn-volver">⬅ Volver</a>
+{% endblock %}
+

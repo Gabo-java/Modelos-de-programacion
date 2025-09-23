@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}CombaChoose{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}" defer></script>
+</head>
+<body class="base-bg">
+    <!-- Header -->
+    <header class="main-header">
+        <div class="logo">
+            ⚔️ <span>CombaChoose</span>
+        </div>
+        <nav class="navbar">
+            <a href="{{ url_for('index') }}">🏠 Inicio</a>
+            <a href="{{ url_for('index') }}#razas">🧝 Razas</a>
+        </nav>
+    </header>
+
+    <!-- Contenido dinámico -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <p>&copy; {{ 2025 }} <strong>CombaChoose</strong> | Proyecto academico <em>Modelo de programación</em> 🛠️</p>
+    </footer>
+</body>
+</html>
