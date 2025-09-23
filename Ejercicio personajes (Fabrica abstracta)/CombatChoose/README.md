@@ -118,8 +118,3 @@ Gabriel Fernando Lozano Echeverry
 Juan Sebastian Rodriguez Serrano
 
 ```
-
----
-
-👉 ¿Quieres que también te arme un **`requirements.txt`** con Flask ya incluido para que cualquiera pueda correrlo con un solo `pip install -r requirements.txt`?
-```
