@@ -1,1 +1,2 @@
 Create a Composite pattern application in Python based on the following scenario: There is a band with different types of instruments: wind, percussion, and strings. For each type, there are three instruments. The band is responsible for playing and tuning the instruments, which can be added and removed without restriction. In the end, everything must be output to the terminal.
+![Diagrama UML](Captura.PNG)
