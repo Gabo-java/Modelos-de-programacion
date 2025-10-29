@@ -84,7 +84,10 @@ pip install pygame
 
     Desarrollado en Python con Pygame.
 
+    Desarrollado por: Juan Sebastian Rodríguez Serrano, Gabriel Fernando Lozano Echeverry y Juan Sebastian Henriquez Berrios 
+
     Implementa patrones de diseño clásicos en un contexto de juego interactivo.
 
     Proyecto académico/didáctico sobre lógica de juegos y diseño orientado a objetos.
+
 
