@@ -51,58 +51,40 @@ Además, al **Jugador 2** se le otorgan 2 objetos aleatorios de calidad baja al 
 
 ## 🧩 Patrones de diseño usados
 
-### 1. Strategy – comportamiento de cartas (`carta.py`)
+### 1. **Strategy** – comportamiento de cartas (`carta.py`)
 
-- **Dónde:** clases `EstrategiaAtaque`, `EstrategiaCura`, `EstrategiaDefensa`, `EstrategiaObjetos`.
+- **Dónde:** clases `EstrategiaAtaque`, `EstrategiaCura`, `EstrategiaDefensa`, `EstrategiaObjetos`
 - **Por qué:** cada carta tiene un comportamiento distinto, pero se usa mediante una interfaz común:
   ```python
   carta.estrategia.aplicar(actor, objetivo, potencia, contexto)
+  ```
+- **Ventajas:** permite añadir nuevas cartas sin modificar el código de jugadores ni del bucle principal (principio Open/Closed)
+- **Alternativas menos adecuadas:**
+  - **Template Method:** impondría una estructura fija a los pasos, poco flexible
+  - **State:** está pensado para estados persistentes, no acciones puntuales
 
-    Ventajas: permite añadir nuevas cartas sin modificar el código de jugadores ni del bucle principal (principio Open/Closed).
+### 2. **Chain of Responsibility** – fases del turno (`turno.py`)
 
-Alternativas posibles pero menos adecuadas:
-
-    Template Method: impondría una estructura fija a los pasos, poco flexible para efectos tan diferentes.
-
-    State: está pensado para representar estados persistentes, no acciones puntuales.
-
-### 2. Chain of Responsibility – fases del turno (turno.py)
-
-    **Dónde:** InicioTurnoHandler, AccionHandler, FinTurnoHandler y TurnoManager.
-
-    **Por qué:** un turno se compone de fases encadenadas:
-
-        inicio → acción → fin.
-
-    Cada handler se encarga de una responsabilidad:
-
-    InicioTurnoHandler -> AccionHandler -> FinTurnoHandler
-
-    Ventajas: es fácil agregar nuevas fases (por ejemplo, “resolución de DOTs globales”, “eventos especiales”) sin romper las existentes.
-
-Alternativas menos adecuadas:
-
-    Observer: los turnos no son simples eventos, sino un flujo ordenado obligatorio.
-
-    Mediator: haría un objeto central excesivamente complejo sin aportar ventajas claras.
+- **Dónde:** `InicioTurnoHandler`, `AccionHandler`, `FinTurnoHandler` y `TurnoManager`
+- **Por qué:** un turno se compone de fases encadenadas:
+  ```
+  InicioTurnoHandler → AccionHandler → FinTurnoHandler
+  ```
+- **Ventajas:** es fácil agregar nuevas fases sin romper las existentes
+- **Alternativas menos adecuadas:**
+  - **Observer:** los turnos no son simples eventos, sino un flujo ordenado obligatorio
+  - **Mediator:** haría un objeto central excesivamente complejo
 
 ### 3. Memento – tiradas de dados y reroll (gestor_memento.py)
 
-    **Dónde:** MementoTirada y GestorMemento.
+### 3. **Memento** – tiradas de dados y reroll (`gestor_memento.py`)
 
-    **Por qué:** antes de hacer un reroll se crea un snapshot del estado:
-
-        valores de los dados,
-
-        rerolls realizados,
-
-        penalización de dados del próximo turno.
-
-    Si el jugador no está conforme con el reroll, puede restaurar la tirada anterior.
-
-Ventajas:
-
-    Permite implementar undo sin romper el encapsulamiento de Jugador.
+- **Dónde:** `MementoTirada` y `GestorMemento`
+- **Por qué:** antes de hacer un reroll se crea un snapshot del estado de los dados
+- **Ventajas:** permite implementar undo sin romper el encapsulamiento de `Jugador`
+- **Alternativas:**
+  - **Command:** también permite undo, pero más verboso
+  - **Prototype:** solo clona, pero no gestiona pilas
 
 Alternativas:
 
@@ -110,71 +92,64 @@ Alternativas:
 
     Prototype: solo clona, pero no gestiona pilas ni historial.
 
-### 4. Object Pool – gestión de objetos (object_pool.py)
+### 4. **Object Pool** – gestión de objetos (`object_pool.py`)
 
-    **Dónde:** ObjectPoolObjetos.
-
-    **Por qué:** los objetos se crean, usan y descartan constantemente. En vez de instanciar y destruir todo el rato:
-
-        se mantiene un pool de instancias reutilizables por tipo.
-
-        cuando se necesita un objeto de cierta calidad, se pide al pool.
-
-        tras usarlo en el juego, se resetea y vuelve al pool.
-
-Ventajas:
-
-    Eficiencia (menos garbage).
-
-    Control centralizado de los tipos de objetos disponibles.
-
-Alternativas:
-
-    Flyweight: más enfocado en compartir estado inmutable; aquí los objetos tienen comportamiento y duración.
-
-    Prototype: serviría para clonar, pero no resuelve la reutilización ni la gestión de disponibilidad.
+- **Dónde:** `ObjectPoolObjetos`
+- **Por qué:** los objetos se crean y se reutilizan constantemente. Se mantiene un pool de instancias reutilizables por tipo
+- **Ventajas:** eficiencia (menos garbage collection) y control centralizado de tipos disponibles
+- **Alternativas:**
+  - **Flyweight:** más enfocado en compartir estado inmutable
+  - **Prototype:** solo clona, pero no gestiona la reutilización
 
 ### 5. Factory Method – creación de objetos (fabrica_objetos.py)
 
-    **Dónde:** FabricaObjetos.crear_objeto(tipo).
+### 5. **Factory Method** – creación de objetos (`fabrica_objetos.py`)
 
-    **Por qué:** encapsula la lógica de creación de cada objeto según su tipo:
+- **Dónde:** `FabricaObjetos.crear_objeto(tipo)`
+- **Por qué:** encapsula la lógica de creación de cada objeto según su tipo
+- **Ventajas:** si se añade un nuevo objeto, solo se modifica la fábrica
+- **Alternativas:**
+  - **Abstract Factory:** innecesaria para esta complejidad
+  - **Builder:** no se necesita construcción paso a paso
+### 6. **Facade** – interfaz simplificada de inventario (`inventario.py`)
 
-    fabrica.crear_objeto("dados_oro")
+- **Dónde:** `InventarioFacade`
+- **Por qué:** proporciona una interfaz unificada que gestiona Object Pool, validaciones de límites y restricciones de uso
+- **Ventajas:** oculta la complejidad del sistema de objetos mediante métodos simples
+- **Alternativas:**
+  - **Mediator:** más complejo para este caso
+  - **Proxy:** no necesitamos controlar el acceso de esta forma
 
-    Ventajas: si se añade un nuevo objeto, solo se modifica la fábrica, manteniendo el resto del código estable.
+### 7. **Singleton** – gestor de recursos (`gestor_recursos.py`)
 
-Alternativas:
+- **Dónde:** `GestorRecursos`
+- **Por qué:** la carga de imágenes y sonidos es un servicio global con una única instancia compartida
+- **Ventajas:** garantiza una única instancia centralizada de recursos
 
-    Abstract Factory: tendría sentido si hubiera familias completas coherentes (por ejemplo, “fábrica de objetos de fuego”, “fábrica de objetos de hielo”). Aquí la complejidad sería innecesaria.
+---
 
-    Builder: no se necesita construcción paso a paso, los objetos son simples.
-    
-## 6. Facade – interfaz simplificada de inventario (inventario.py)
-    Dónde: InventarioFacade.
+## ❌ Patrones que NO se usan (y por qué)
 
-    Por qué: proporciona una interfaz unificada y simplificada para gestionar la compleja interacción entre:
-        Object Pool (obtención/devolución de objetos)
-        Validaciones de límites (máximo 5 objetos)
-        Restricciones de uso (1 objeto por turno)
-        Interfaz con el jugador y el juego
-    Ventajas:
-        Oculta la complejidad del sistema de objetos
-        Proporciona métodos simples como agregar_objeto(), usar_objeto(), obtener_objeto_aleatorio_y_guardar()
-        Facilita el mantenimiento y la extensión del sistema de inventario
-    Alternativas:
-        Mediator: podría centralizar la comunicación entre componentes, pero sería más complejo para este caso específico
-        Proxy: no aplica ya que no necesitamos controlar el acceso al pool
+| Patrón | Razón |
+|--------|-------|
+| **Singleton** para Jugador/Cartas/Objetos | Rompería el concepto de múltiples instancias |
+| **State** para cartas | Las cartas representan acciones puntuales, no estados persistentes |
+| **Mediator** para turnos | Complicaría demasiado centralizando la lógica |
+| **Observer** para rerolls | El reroll es una acción directa, no un evento distribuido |
 
-7. Singleton – gestor de recursos (gestor_recursos.py)
+---
 
-    **Dónde:** GestorRecursos.
+## 🚀 Ejecución
 
-    **Por qué:** la carga de imágenes y sonidos es un servicio global y solo debería haber una instancia compartida.
+### Instalar dependencias:
+```bash
+pip install pygame
+```
 
-❌ Patrones que NO se deberían usar aquí
-
-    Singleton para Jugador, Cartas u Objetos: rompería el concepto de múltiples instancias (2 jugadores, muchas cartas, muchos objetos).
+### Ejecutar el juego:
+```bash
+python app.py
+```
 
     State para cartas: las cartas no representan estado permanente, sino acciones puntuales ligadas a un dado.
 
