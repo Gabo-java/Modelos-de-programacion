@@ -1,0 +1,210 @@
+@startuml
+
+title Duelos por Dados TCG - UML General
+
+' ===========================
+'        CLASE CARTA
+' ===========================
+class Carta {
+    +nombre: str
+    +usar(jugador, objetivo, valor_dado)
+}
+
+interface EstrategiaCarta {
+    +ejecutar(jugador, objetivo, valor_dado)
+}
+
+class CartaAtaque {
+    +ejecutar()
+}
+
+class CartaCura {
+    +ejecutar()
+}
+
+class CartaDefensa {
+    +ejecutar()
+}
+
+class CartaObjeto {
+    +ejecutar()
+}
+
+Carta *- EstrategiaCarta
+EstrategiaCarta <|-- CartaAtaque
+EstrategiaCarta <|-- CartaCura
+EstrategiaCarta <|-- CartaDefensa
+EstrategiaCarta <|-- CartaObjeto
+
+
+' ===========================
+'        CLASE JUGADOR
+' ===========================
+class Jugador {
+    +nombre: str
+    +vida: int
+    +escudo: int
+    +dados: list
+    +inventario: list
+    +rerolls_realizados: int
+    +dot: list
+    +lanzar_dados()
+    +hacer_reroll()
+    +aplicar_carta()
+    +recibir_daño()
+    +curar()
+    +agregar_objeto()
+}
+
+Jugador --> Carta : usa >
+Jugador --> "lista" Objeto : obtiene >
+Jugador --> Memento : crea >
+Jugador --> Caretaker : gestiona estados >
+
+
+' ===========================
+'       OBJETOS TCG
+' ===========================
+abstract class Objeto {
+    +nombre: str
+    +calidad: str
+    +usar(jugador, objetivo)
+}
+
+class ObjetoAtaqueBajo {
+    +usar()
+}
+
+class ObjetoDefensaBaja {
+    +usar()
+}
+
+class Bandita {
+    +usar()
+}
+
+class DadosPlata {
+    +usar()
+}
+
+class Piromancia {
+    +usar()
+}
+
+class PergaminoProteccion {
+    +usar()
+}
+
+class DadosOro {
+    +usar()
+}
+
+class DadoFantasma {
+    +usar()
+}
+
+class DefensaAbsoluta {
+    +usar()
+}
+
+Objeto <|-- ObjetoAtaqueBajo
+Objeto <|-- ObjetoDefensaBaja
+Objeto <|-- Bandita
+Objeto <|-- DadosPlata
+Objeto <|-- Piromancia
+Objeto <|-- PergaminoProteccion
+Objeto <|-- DadosOro
+Objeto <|-- DadoFantasma
+Objeto <|-- DefensaAbsoluta
+
+
+' ===========================
+'      FACTORY + POOL
+' ===========================
+class FabricaObjetos {
+    +crear_objeto(tipo) : Objeto
+}
+
+class ObjectPool {
+    -pool: dict
+    +obtener_objeto(tipo)
+    +liberar_objeto(obj)
+}
+
+FabricaObjetos --> Objeto
+ObjectPool --> Objeto
+CartaObjeto --> FabricaObjetos
+
+
+' ===========================
+'      MEMENTO (REROLL)
+' ===========================
+class Memento {
+    +estado_dados: list
+    +rerolls_realizados: int
+}
+
+class Caretaker {
+    +guardar()
+    +restaurar()
+}
+
+class Originator {
+    +crear_memento()
+    +restaurar(memento)
+}
+
+Jugador --> Originator
+Originator --> Memento
+Caretaker --> Memento
+
+
+' ===========================
+'      TURNOS (COR)
+' ===========================
+abstract class HandlerTurno {
+    +set_next(handler)
+    +handle(contexto)
+}
+
+class TurnoInicio {
+    +handle()
+}
+
+class TurnoAccion {
+    +handle()
+}
+
+class TurnoFin {
+    +handle()
+}
+
+HandlerTurno <|-- TurnoInicio
+HandlerTurno <|-- TurnoAccion
+HandlerTurno <|-- TurnoFin
+
+TurnoInicio --> TurnoAccion
+TurnoAccion --> TurnoFin
+
+
+' ===========================
+'      GESTOR RECURSOS (Singleton)
+' ===========================
+class GestorRecursos {
+    -instancia: GestorRecursos
+    +obtener_imagen(nombre)
+}
+
+GestorRecursos --> "assets" : carga >
+
+
+' ===========================
+'      RELACIONES GENERALES
+' ===========================
+Jugador --> HandlerTurno : ejecuta >
+TurnoAccion --> Carta : selecciona >
+TurnoAccion --> Objeto : usa >
+CartaObjeto --> ObjectPool : solicita >
+CartaObjeto --> FabricaObjetos : crea >
+
+@enduml
